@@ -29,3 +29,5 @@ INSERT INTO users (id, name, email, phone, address, createdAt, updatedAt) VALUES
 (18, 'User 18', 'user18@example.com', '1818181818', 'address 18', NOW() - (random() * interval '365 days'), NOW() - (random() * interval '30 days')),
 (19, 'User 19', 'user19@example.com', '1919191919', 'address 19', NOW() - (random() * interval '365 days'), NOW() - (random() * interval '30 days')),
 (20, 'User 20', 'user20@example.com', '2020202020', 'address 20', NOW() - (random() * interval '365 days'), NOW() - (random() * interval '30 days'));
+
+SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));

@@ -8,12 +8,13 @@ import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jp.co.monocrea.user.common.OrderEnum;
+import jp.co.monocrea.user.dto.UserDetailDto;
 import jp.co.monocrea.user.dto.UserSummaryDto;
 
 @ApplicationScoped
 public class UserRepository implements PanacheRepository<UserTable> {
     
-    public PagedResult<UserSummaryDto> findUserSummaryById(int id) {
+    public PagedResult<UserSummaryDto> findUserSummaryById(Long id) {
         List<UserSummaryDto> users = find("id", id)
             .project(UserSummaryProjection.class)
             .stream()
@@ -42,6 +43,36 @@ public class UserRepository implements PanacheRepository<UserTable> {
             .toList();
 
         return new PagedResult<>(pageList, totalCount);
+    }
+
+    public UserDetailDto findUserDetailById(Long id) {
+        UserTable user = findById(id);
+        return new UserDetailDto(id, user.name, user.email, user.phone, user.address, user.createdAt, user.updatedAt);
+    }
+
+    public void createUser(UserDetailDto userDetail) {
+        UserTable user = new UserTable();
+        user.name = userDetail.name;
+        user.email = userDetail.email;
+        user.phone = userDetail.phone;
+        user.address = userDetail.address;
+        user.createdAt = userDetail.createdAt;
+        user.updatedAt = userDetail.updatedAt;
+        persist(user);
+    }
+
+    public void updateUser(UserDetailDto userDetail) {
+        UserTable user = findById(userDetail.id);
+        user.name = userDetail.name;
+        user.email = userDetail.email;
+        user.phone = userDetail.phone;
+        user.address = userDetail.address;
+        user.updatedAt = userDetail.updatedAt;
+        persist(user);
+    }
+
+    public void deleteUser(Long id) {
+        deleteById(id);
     }
 
     private Sort createSort(String sortKey, OrderEnum order) {

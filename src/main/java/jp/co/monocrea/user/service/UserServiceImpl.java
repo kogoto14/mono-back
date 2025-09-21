@@ -1,9 +1,12 @@
 package jp.co.monocrea.user.service;
 
+import java.util.Optional;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jp.co.monocrea.user.common.OrderEnum;
+import jp.co.monocrea.user.dto.UserDetailDto;
 import jp.co.monocrea.user.dto.UserSummariesDto;
 import jp.co.monocrea.user.dto.UserSummaryDto;
 import jp.co.monocrea.user.repository.PagedResult;
@@ -17,19 +20,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserSummariesDto getPagenatedUserSummaries(Integer id, String nameLike, String sortKey, OrderEnum order, Integer page, Integer limit) {
-        int pageNum = (page != null && page > 0) ? page : 1;
-        int limitNum = (limit != null && limit > 0) ? limit : 10;
+    public UserSummariesDto getPagenatedUserSummaries(Long id, String nameLike, String sortKey, OrderEnum order, Integer page, Integer limit) {
+        int pageNum = Optional.ofNullable(page).orElse(1);
+        int limitNum = Optional.ofNullable(limit).orElse(10);
         
-        PagedResult<UserSummaryDto> result;
-
-        if (id != null) {
-            result = userRepository.findUserSummaryById(id);
-        } else {
-            result = userRepository.findPagedUserSummariesWithSort(nameLike, sortKey, order, pageNum, limitNum);
-        }
+        PagedResult<UserSummaryDto> result = Optional.ofNullable(id)
+            .map(userRepository::findUserSummaryById)
+            .orElseGet(() -> userRepository.findPagedUserSummariesWithSort(nameLike, sortKey, order, pageNum, limitNum));
         
         return new UserSummariesDto(result.list, result.totalCount);
     }
-}
 
+    @Override
+    @Transactional
+    public UserDetailDto getUserDetailById(Long id) {
+        return userRepository.findUserDetailById(id);
+    }
+
+    @Override
+    @Transactional
+    public void createUser(UserDetailDto userDetail) {
+        userRepository.createUser(userDetail);
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(UserDetailDto userDetail) {
+        userRepository.updateUser(userDetail);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        userRepository.deleteUser(id);
+    }
+}
