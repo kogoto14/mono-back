@@ -1,5 +1,5 @@
 CREATE TABLE users (
-    id INT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255),
     email VARCHAR(255),
     phone VARCHAR(255),
