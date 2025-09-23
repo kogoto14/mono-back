@@ -1,4 +1,4 @@
-package jp.co.monocrea.user.repository;
+package jp.co.monocrea.user.repository.table;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "users")
@@ -16,11 +18,13 @@ public class UserTable extends PanacheEntityBase{
     @Id
     @SequenceGenerator(name = "usersIdSeq", sequenceName = "users_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usersIdSeq")
-    public Long id;
-    public String name;
-    public String email;
-    public String phone;
-    public String address;
-    public LocalDateTime createdAt;
-    public LocalDateTime updatedAt;
+    @Getter
+    @Setter
+    private Long id;
+    @Getter @Setter private String name;
+    @Getter @Setter private String email;
+    @Getter @Setter private String phone;
+    @Getter @Setter private String address;
+    @Getter @Setter private LocalDateTime createdAt;
+    @Getter @Setter private LocalDateTime updatedAt;
 }

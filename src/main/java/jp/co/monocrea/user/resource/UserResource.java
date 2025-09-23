@@ -15,12 +15,15 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 import jp.co.monocrea.user.common.OrderEnum;
-import jp.co.monocrea.user.dto.UserDetailDto;
-import jp.co.monocrea.user.dto.UserSummariesDto;
+import jp.co.monocrea.user.resource.request.UserCreateRequest;
+import jp.co.monocrea.user.resource.request.UserUpdateRequest;
+import jp.co.monocrea.user.resource.response.PagedUserSummariesResponse;
+import jp.co.monocrea.user.resource.response.UserDetailResponse;
 import jp.co.monocrea.user.service.UserService;
 
 @Path("/users")
 public class UserResource {
+    
     @Inject
     UserService userService;
 
@@ -33,7 +36,14 @@ public class UserResource {
         @QueryParam("_page")  @Positive @DefaultValue("1") Integer page,
         @QueryParam("_limit") @Positive @DefaultValue("10") @Min(1) @Max(100) Integer limit
     ) {        
-        UserSummariesDto userSummaries = userService.getPagenatedUserSummaries(id, nameLike, sortKey, order, page, limit);
+        PagedUserSummariesResponse userSummaries = userService.getPagenatedUserSummaries(
+            id,
+            nameLike,
+            sortKey,
+            order,
+            page,
+            limit
+        );
         return Response
                 .ok(userSummaries.getUsers())
                 .header("X-Total-Count", userSummaries.getTotalCount())
@@ -43,22 +53,21 @@ public class UserResource {
     @GET
     @Path("/{id}")
     public Response getUserById(@PathParam("id") @Positive Long id) {
-        UserDetailDto userDetail = userService.getUserDetailById(id);
+        UserDetailResponse userDetail = userService.getUserDetailById(id);
         return Response.ok(userDetail).build();
     }
 
     @POST
-    public Response createUser(UserDetailDto userDetail) {
-        userService.createUser(userDetail);
-        return Response.ok(userDetail).build();
+    public Response createUser(UserCreateRequest userCreateRequest) {
+        userService.createUser(userCreateRequest.convertToUserCreateCommand());
+        return Response.ok().build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response updateUser(@PathParam("id") @Positive Long id, UserDetailDto userDetail) {
-        userDetail.id = id;
-        userService.updateUser(userDetail);
-        return Response.ok(userDetail).build();
+    public Response updateUser(@PathParam("id") @Positive Long id, UserUpdateRequest userUpdateRequest) {
+        userService.updateUser(userUpdateRequest.convertToUserUpdateCommand(id));
+        return Response.ok().build();
     }
 
     @DELETE
