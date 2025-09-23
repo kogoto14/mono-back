@@ -13,6 +13,17 @@ import jp.co.monocrea.user.dto.UserSummaryDto;
 
 @ApplicationScoped
 public class UserRepository implements PanacheRepository<UserTable> {
+
+    public void createUser(UserDetailDto userDetail) {
+        UserTable user = new UserTable();
+        user.name = userDetail.name;
+        user.email = userDetail.email;
+        user.phone = userDetail.phone;
+        user.address = userDetail.address;
+        user.createdAt = userDetail.createdAt;
+        user.updatedAt = userDetail.updatedAt;
+        persist(user);
+    }
     
     public PagedResult<UserSummaryDto> findUserSummaryById(Long id) {
         List<UserSummaryDto> users = find("id", id)
@@ -48,17 +59,6 @@ public class UserRepository implements PanacheRepository<UserTable> {
     public UserDetailDto findUserDetailById(Long id) {
         UserTable user = findById(id);
         return new UserDetailDto(id, user.name, user.email, user.phone, user.address, user.createdAt, user.updatedAt);
-    }
-
-    public void createUser(UserDetailDto userDetail) {
-        UserTable user = new UserTable();
-        user.name = userDetail.name;
-        user.email = userDetail.email;
-        user.phone = userDetail.phone;
-        user.address = userDetail.address;
-        user.createdAt = userDetail.createdAt;
-        user.updatedAt = userDetail.updatedAt;
-        persist(user);
     }
 
     public void updateUser(UserDetailDto userDetail) {
