@@ -55,8 +55,14 @@ public class UserRepository implements PanacheRepository<UserTable> {
         return userTable.getId();
     }
 
-    public boolean updateUser(UserTable userTable) {
-        getEntityManager().merge(userTable);
+    public boolean updateUser(UserTable changes) {
+        var user = findById(changes.getId());
+        if (user == null) return false;
+        user.setName(changes.getName());
+        user.setEmail(changes.getEmail());
+        user.setPhone(changes.getPhone());
+        user.setAddress(changes.getAddress());
+        user.setUpdatedAt(changes.getUpdatedAt());
         return true;
     }
 

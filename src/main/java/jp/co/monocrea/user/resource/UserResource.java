@@ -1,6 +1,7 @@
 package jp.co.monocrea.user.resource;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -34,7 +35,7 @@ public class UserResource {
         @QueryParam("_sort") @Pattern(regexp = "id|name") String sortKey,
         @QueryParam("_order") @DefaultValue("ASC") OrderEnum order,
         @QueryParam("_page")  @Positive @DefaultValue("1") Integer page,
-        @QueryParam("_limit") @Positive @DefaultValue("10") @Min(1) @Max(100) Integer limit
+        @QueryParam("_limit") @Positive @DefaultValue("5") @Min(1) @Max(100) Integer limit
     ) {        
         PagedUserSummariesResponse userSummaries = userService.getPagenatedUserSummaries(
             id,
@@ -45,7 +46,7 @@ public class UserResource {
             limit
         );
         return Response
-                .ok(userSummaries.getUsers())
+                .ok(userSummaries.getUsers().getUsers())
                 .header("X-Total-Count", userSummaries.getTotalCount())
                 .build();
     }
@@ -58,14 +59,14 @@ public class UserResource {
     }
 
     @POST
-    public Response createUser(UserCreateRequest userCreateRequest) {
+    public Response createUser(@Valid UserCreateRequest userCreateRequest) {
         userService.createUser(userCreateRequest.convertToUserCreateCommand());
         return Response.ok().build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response updateUser(@PathParam("id") @Positive Long id, UserUpdateRequest userUpdateRequest) {
+    public Response updateUser(@PathParam("id") @Positive Long id, @Valid UserUpdateRequest userUpdateRequest) {
         userService.updateUser(userUpdateRequest.convertToUserUpdateCommand(id));
         return Response.ok().build();
     }

@@ -53,12 +53,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUser(UserUpdateCommand userUpdateCommand) {
         boolean ok = userRepository.updateUser(userUpdateCommand.convertToUserTable());
-        if (!ok) throw new jakarta.ws.rs.NotFoundException();
+        if (!ok) throw new jakarta.ws.rs.InternalServerErrorException();
     }
 
     @Override
     @Transactional
     public void deleteUser(Long id) {
-        if (!userRepository.deleteUser(id)) throw new jakarta.ws.rs.NotFoundException();
+        if (!userRepository.deleteUser(id)) throw new jakarta.ws.rs.InternalServerErrorException();
     }
 }
