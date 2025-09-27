@@ -38,7 +38,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDetailResponse getUserDetailById(Long id) {
         UserDetailDto userDetail = userRepository.findUserDetailById(id);
-        if (userDetail == null) throw new jakarta.ws.rs.NotFoundException();
         return UserDetailResponse.from(userDetail);
     }
 
