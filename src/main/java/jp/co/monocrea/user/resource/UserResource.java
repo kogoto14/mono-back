@@ -29,7 +29,7 @@ public class UserResource {
     UserService userService;
 
     @GET
-    public Response getPagenatedUsers(
+    public Response getPaginatedUsers(
         @QueryParam("id") @Positive Long id,
         @QueryParam("_name_like") String nameLike,
         @QueryParam("_sort") @Pattern(regexp = "id|name") String sortKey,
@@ -37,7 +37,7 @@ public class UserResource {
         @QueryParam("_page")  @Positive @DefaultValue("1") Integer page,
         @QueryParam("_limit") @Positive @DefaultValue("5") @Min(1) @Max(100) Integer limit
     ) {        
-        PagedUserSummariesResponse userSummaries = userService.getPagenatedUserSummaries(
+        PagedUserSummariesResponse userSummaries = userService.getPaginatedUserSummaries(
             id,
             nameLike,
             sortKey,

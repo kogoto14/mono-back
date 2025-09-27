@@ -31,7 +31,7 @@ class UserServiceTest {
 
     @Test
     @TestTransaction
-    void testPagenatedUserSummariesWithoutNameLike() {
+    void testPaginatedUserSummariesWithoutNameLike() {
         // Arrange
         List<UserTable> users = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
@@ -48,7 +48,7 @@ class UserServiceTest {
         }
 
         // Act
-        PagedUserSummariesResponse userSummaries = userService.getPagenatedUserSummaries(null, null, "name", OrderEnum.DESC, 1, 10);
+        PagedUserSummariesResponse userSummaries = userService.getPaginatedUserSummaries(null, null, "name", OrderEnum.DESC, 1, 10);
 
         // Assert
         assertEquals(10, userSummaries.getTotalCount());
@@ -57,7 +57,7 @@ class UserServiceTest {
 
     @Test
     @TestTransaction
-    void testPagenatedUserSummariesWithNameLike() {
+    void testPaginatedUserSummariesWithNameLike() {
         // Arrange
         List<UserTable> users = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
@@ -73,7 +73,7 @@ class UserServiceTest {
         }
     
         // Act
-        PagedUserSummariesResponse userSummaries = userService.getPagenatedUserSummaries(null, "1", "name", OrderEnum.DESC, 1, 10);
+        PagedUserSummariesResponse userSummaries = userService.getPaginatedUserSummaries(null, "1", "name", OrderEnum.DESC, 1, 10);
 
         // Assert
         assertEquals(2, userSummaries.getTotalCount());

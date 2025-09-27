@@ -36,23 +36,23 @@ class UserResourceTest {
     UserService userService;
 
     @Test
-    void testPagenatedUsersReturns200() {
+    void testPaginatedUsersReturns200() {
         doReturn(
             new PagedUserSummariesResponse(
                 new UserSummariesResponse(new ArrayList<>()),
                 0L
             )
-        ).when(userService).getPagenatedUserSummaries(anyLong(), anyString(), anyString(), any(OrderEnum.class), anyInt(), anyInt());
+        ).when(userService).getPaginatedUserSummaries(anyLong(), anyString(), anyString(), any(OrderEnum.class), anyInt(), anyInt());
         given().when().get("/users?id=1&_name_like=test&_page=1&_limit=10&_sort=name&_order=ASC").then().statusCode(200);
     }
 
     @Test
-    void testPagenatedUsersReturns400WithInvalidId() {
+    void testPaginatedUsersReturns400WithInvalidId() {
         given().when().get("/users?id=-1&_name_like=test&_page=1&_limit=10&_sort=name&_order=ASC").then().statusCode(400);
     }
 
     @Test
-    void testPagenatedUsersReturns400WithInvalidSortKey() {
+    void testPaginatedUsersReturns400WithInvalidSortKey() {
         given().when().get("/users?id=1&_name_like=test&_page=1&_limit=10&_sort=invalid&_order=ASC").then().statusCode(400);
     }
 

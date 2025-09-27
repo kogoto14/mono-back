@@ -7,7 +7,7 @@ import jp.co.monocrea.user.service.command.UserCreateCommand;
 import jp.co.monocrea.user.service.command.UserUpdateCommand;
 
 public interface UserService {
-    public PagedUserSummariesResponse getPagenatedUserSummaries(Long id, String nameLike, String sortKey, OrderEnum order, Integer page, Integer limit);
+    public PagedUserSummariesResponse getPaginatedUserSummaries(Long id, String nameLike, String sortKey, OrderEnum order, Integer page, Integer limit);
     public UserDetailResponse getUserDetailById(Long id);
     public void createUser(UserCreateCommand userCreateCommand);
     public void updateUser(UserUpdateCommand userUpdateCommand);

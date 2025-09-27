@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public PagedUserSummariesResponse getPagenatedUserSummaries(Long id, String nameLike, String sortKey, OrderEnum order, Integer page, Integer limit) {
+    public PagedUserSummariesResponse getPaginatedUserSummaries(Long id, String nameLike, String sortKey, OrderEnum order, Integer page, Integer limit) {
         int pageNum = Optional.ofNullable(page).orElse(1);
         int limitNum = Optional.ofNullable(limit).orElse(10);
         
