@@ -5,7 +5,7 @@ import java.util.Optional;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jp.co.monocrea.user.common.DefaultValues;
+import jp.co.monocrea.user.common.QueryConstants;
 import jp.co.monocrea.user.common.OrderEnum;
 import jp.co.monocrea.user.repository.dto.PagedResultDto;
 import jp.co.monocrea.user.repository.dto.UserDetailDto;
@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public PagedUserSummariesResponse getPaginatedUserSummaries(Long id, String nameLike, String sortKey, OrderEnum order, Integer page, Integer limit) {
-        int pageNum = Optional.ofNullable(page).orElse(Integer.valueOf(DefaultValues.DEFAULT_PAGE));
-        int limitNum = Optional.ofNullable(limit).orElse(Integer.valueOf(DefaultValues.DEFAULT_LIMIT));
+        int pageNum = Optional.ofNullable(page).orElse(Integer.valueOf(QueryConstants.DEFAULT_PAGE));
+        int limitNum = Optional.ofNullable(limit).orElse(Integer.valueOf(QueryConstants.DEFAULT_LIMIT));
         
         PagedResultDto result = Optional.ofNullable(id)
             .map(userRepository::findUserSummaryById)

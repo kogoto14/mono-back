@@ -15,7 +15,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
-import jp.co.monocrea.user.common.DefaultValues;
+import jp.co.monocrea.user.common.QueryConstants;
 import jp.co.monocrea.user.common.OrderEnum;
 import jp.co.monocrea.user.resource.request.UserCreateRequest;
 import jp.co.monocrea.user.resource.request.UserUpdateRequest;
@@ -33,10 +33,10 @@ public class UserResource {
     public Response getPaginatedUsers(
         @QueryParam("id") @Positive Long id,
         @QueryParam("_name_like") String nameLike,
-        @QueryParam("_sort") @Pattern(regexp = DefaultValues.KEY_ID + "|" + DefaultValues.KEY_NAME) String sortKey,
-        @QueryParam("_order") @DefaultValue(DefaultValues.DEFAULT_ORDER) OrderEnum order,
-        @QueryParam("_page")  @Positive @DefaultValue(DefaultValues.DEFAULT_PAGE) Integer page,
-        @QueryParam("_limit") @Positive @DefaultValue(DefaultValues.DEFAULT_LIMIT) @Min(DefaultValues.MIN_LIMIT) @Max(DefaultValues.MAX_LIMIT) Integer limit
+        @QueryParam("_sort") @Pattern(regexp = QueryConstants.KEY_ID + "|" + QueryConstants.KEY_NAME) String sortKey,
+        @QueryParam("_order") @DefaultValue(QueryConstants.DEFAULT_ORDER) OrderEnum order,
+        @QueryParam("_page")  @Positive @DefaultValue(QueryConstants.DEFAULT_PAGE) Integer page,
+        @QueryParam("_limit") @Positive @DefaultValue(QueryConstants.DEFAULT_LIMIT) @Min(QueryConstants.MIN_LIMIT) @Max(QueryConstants.MAX_LIMIT) Integer limit
     ) {        
         PagedUserSummariesResponse userSummaries = userService.getPaginatedUserSummaries(
             id,
